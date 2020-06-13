@@ -1,0 +1,432 @@
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
+#+AUTHOR: Angelo Julioth
+#+TITLE: Eloquent Javascript - My Notes
+#+OPTIONS:
+#+DESCRIPTION: title,author,date
+#+latex_class: report
+#+latex_class_options: [a4paper]
+* Some phrases
+** Remember to reread, if not just rest
+   #+BEGIN_VERSE
+   When action grows unprofitable, gather information; when information grows unprofitable, sleep.
+   ---Ursula K. Le Guin, The left hand of darkness.
+   #+END_VERSE
+* Historical facts
+  - The language tried to use a name similar to Java for marketing purposes
+  - It was created to add interactivity to Netscape Browser's webpages
+  - EcmaScript was a document created to set a standard for Javascript
+  - The Ecma International Organization is in charge of EcmaScript
+** Versions
+   - EcmaScript 3 was a widely supported version during Javascript's ascend
+     to dominance
+   - "EcmaScript 4" was about to be released with major changes, some
+     controversial; so the project was abandoned in 2008
+   - EcmaScript 5 was a less ambitious and radical project that made some
+     non radical changes to the language
+   - EcmaScript 6 was released in 2015, a major release which implemented
+     some of the ideas that were initially thought for version 4
+   - Since 2015 some minor changes have been released for version 6
+
+* Chapter 1
+*** Basic types and Operators
+    - Number: 64bit / can represent $2^{64}$ different numbers or 18
+      quintillion(which is 18 with 18 zeros after it).
+      - Not all whole numbers less than 18 quintillion fit in a Js
+        number type since these bits are used to represent negative values too
+         - The actual maximum whole number that can be stored is in the range
+           of 9 quadrillion (15 zeros)
+         - Calculations performed with integers that fit within 64bit are precise
+      - Not whole numbers can also be represented, so to do this
+        some bits are used to store the decimal point
+         - Fractional numbers are represented using a dot: $9.81$
+         - In some situations, we need to keep in mind that precision is lost when
+           using floating point values
+      - For very big and very small numbers, scientific notation can be used:
+        - e for exponent: $2.998e8 \implies 2.998 \times 10^8 = 299,800,000$
+    - *Operators* _Always take into account associativity, and precedence._
+    |-----+----------+----------+-----------------+---------------|
+    | lvl | type     | operator | name            | associativity |
+    |-----+----------+----------+-----------------+---------------|
+    |   0 | grouping | ()       | parethesis      | n/a           |
+    |   4 | unary    | +        | unary plus      | rtl           |
+    |   4 | unary    | -        | unary negation  | rtl           |
+    |   4 | unary    | typeof   | typeof operator | rtl           |
+    |   5 | binary   | *        | multiplication  | ltr           |
+    |   5 | binary   | /        | division        | ltr           |
+    |   5 | binary   | %        | modulus         | ltr           |
+    |   6 | binary   | +        | addition        | ltr           |
+    |   6 | binary   | -        | substraction    | ltr           |
+    |-----+----------+----------+-----------------+---------------|
+    - *Special Numbers:* 3 special values in Javascript are considered of type number
+      - Infinity
+      - -Infinity
+      - NaN (Not a Number)
+       #+BEGIN_VERSE
+        You get a result of NaN when trying to perform a senseless computation.
+        Keep in mind that in Javascript there's the concept of NaN \ne NaN
+        NaN \ne NaN because the result of a senseless computation may not be
+        equal to the result of another senseless computation
+       #+END_VERSE
+    - *Strings*
+      - Double quote "Hello there!"
+      - Single quote 'Hello there!'
+      - Template Literal `Hello there!`
+      - Escaping within double and single quote strings: A string ends with the
+        same kind of quote it started, if for some reason, the string should contain
+        the same kind of quote used to enclose the string, just escape it with \
+      - Escaping special characters within strings: Just use \ followed by the next
+        character in the escaping sequence.(\n)
+      - Template literals - Computing embedded values: Template literals can be used
+        to compute values for expressions enclosed inside ${}: `the sum is ${2 + 2}`
+      - Template literals include spaces and newline characters as set by the source code.
+      - Concatenation occurs with strings if we use the symbol + between two of them
+      - Javascript uses Unicode to represent characters
+      - Unicode uses 16bit numbers to represent characters, so $2^{16}$
+      - Some Unicode characters need more than 16bit in order to work, so two are combined
+        to make up one character
+    - *typeof* Operator
+      - Not all the operators are symbols, typeof is a word used to describe an unary
+        operator which evaluates it's right hand side and give us a string describing
+        the type of value of the operand
+    - *Boolean* values (keywords *true* and *false*) to represent a binary state
+    - *Relational operators:* the result of the relation produces a boolean value
+      |-----+--------+----------+-------------------+---------------|
+      | lvl | type   | operator | name              | associativity |
+      |-----+--------+----------+-------------------+---------------|
+      |   8 | binary | <        | minor than        | ltr           |
+      |   8 | binary | >        | major than        | ltr           |
+      |   8 | binary | <=       | minor or equal to | ltr           |
+      |   8 | binary | >=       | major or equal to | ltr           |
+      |-----+--------+----------+-------------------+---------------|
+    - *Equality operators:* The result of the relation produces a boolean value
+      |-----+--------+--------------------+---------------------+---------------|
+      | lvl | type   | operator           | name                | associativity |
+      |-----+--------+--------------------+---------------------+---------------|
+      |   9 | binary | \equal\equal       | equal to            | ltr           |
+      |   9 | binary | !=                 | not equal           | ltr           |
+      |   9 | binary | \equal\equal\equal | equal to strong     | ltr           |
+      |   9 | binary | !==                | not equal to strong | ltr           |
+      |-----+--------+--------------------+---------------------+---------------|
+    - *Logical Operators:* Operate on boolean values
+      - logical not negates the value of the operand
+      - logical and needs both operands to be true in order to compute to true
+      - logical or needs one of the operands to be true in order to compute to true
+      - conditional operator(ternary) uses an expression which evaluates to a boolean and path to take
+        according to the evaluation of the expression at the left hand side.
+      |-----+---------+----------------------------------------+-------------+---------------|
+      | lvl | type    | operator                               | name        | associativity |
+      |-----+---------+----------------------------------------+-------------+---------------|
+      |   4 | unary   | !                                      | logical not | rtl           |
+      |  13 | binary  | &&                                     | logical and | ltr           |
+      |  14 | binary  | \vert\vert                             | logical or  | ltr           |
+      |  15 | ternary | [bool eval] ? [for true] : [for false] | conditional | rtl           |
+      |-----+---------+----------------------------------------+-------------+---------------|
+    - *Empty Values:*
+      - undefined and null: mostly used interchangeably, it just signifies the lack of a meaningful value
+    - *Type coersion:*
+      - It is used when Javascript automatically tries to convert a type to make sense of an expression and
+        evaluate it.
+    - *Short circuiting of logical operators:*
+      - logical operators can be used in a way to return values that can only be converted to true
+        and if the left hand side evaluates to true, the right hand side doesn't even get evaluated
+      #+BEGIN_SRC js :exports both :results output
+      console.log(0 || "Jones");
+      #+END_SRC
+
+      #+RESULTS:
+      : Jones
+
+      #+BEGIN_SRC js :exports both :results output
+      console.log(null || "user")
+      #+END_SRC
+
+      #+RESULTS:
+      : user
+
+      #+BEGIN_SRC js :exports both :results output
+      console.log("Agnes" || "user")
+      #+END_SRC
+
+      #+RESULTS:
+      : Agnes
+
+* Chapter 2
+#+RESULTS:
+          
+  - Expressions: an expression is anything that evaluates to a value
+    - An expression can be content with just evaluating to a value
+  - Statements: an statement is a set of $n$ expressions which forms a whole instruction
+    - A statement only amounts to something when it produces side effects, aka changing
+      the world or changing the internal state of the machine
+      - changing the world: printing something to the screen
+      - changing the internal state of the machine: changes the internal state of the
+        machine(memory) so that the statements comming after it are afected.
+  - Bindings: a binding can be used to store a value an link it to a name so that it's
+    possible to refer to it later and to avoid the value to dissipate. Bindings can be
+    relinked to a value with the = operator
+    - *undefined:* a binding not linked to a value evaluates to undefined
+    - *let*: let bindingName = expression;
+    #+BEGIN_SRC js :exports both :results output
+    let luigisDebt = 140;
+    console.log("Current Luigi's debt is $" + luigisDebt);
+    luigisDebt = luigisDebt - 35;
+    console.log("Now Luigi payed me $" + 35);
+    console.log("Current Luigi's debt is $" + luigisDebt);
+    #+END_SRC
+
+    #+RESULTS:
+    : Current Luigi's debt is $140
+    : Now Luigi payed me $35
+    : Current Luigi's debt is $105
+
+    - Define multiple bindings: it's possible to define multiple separating the names and
+      optional initialization by commas, the keyword let is used only once
+      #+BEGIN_SRC js :exports both :results output
+      let one = 1, two = 2;
+      console.log(one + 2);
+      #+END_SRC
+
+      #+RESULTS:
+      : 3
+
+    - *var and const* are another way to create bindings, var was used pre 2015 Javascript
+      to define variables, but properties are confusing and const points at the same value
+      for as long as it lives.
+      #+BEGIN_SRC js :exports both :results output
+      var name = "Ayda";
+      const greeting = "Hello ";
+      console.log(greeting + name);
+      #+END_SRC
+
+      #+RESULTS:
+      : Hello Ayda
+      - *binding names:* a binding name can use any alphanumeric from ascii, and two other symbols
+        namely, underscore _ and dollar sign $. Names *can't* start with a digit.
+      - *The Environment:* is a collection of bindings present at any given time, when a program
+        starts, it does so with an environment that define part of the language standard and a
+        way to interact with the system
+      - *Functions:* Are pieces of a program wrapped as a value
+        - to *call/invoke* a function just put parethesis after an expression that evaluates to
+          a function value
+          #+BEGIN_SRC js :exports both :results output
+            function printGreeting(name) {
+                console.log(`Hello there ${name}`);
+            }
+
+            // now we invoke the function with the binding and putting
+            // parenthesis right after it. We also pass an argument
+            printGreeting("Aurelius");
+          #+END_SRC
+
+          #+RESULTS:
+          : Hello there Aurelius
+
+      - *console.log function:* is included in most sandboxes, the arguments passed to this function are
+        printed within an output device, in node.js it prints to the console and in most web browsers
+        it prints to the Javascript console from the developer options
+        - log is a member property part of the console binding
+
+      - *Return values:* don't produce side effects since the environment and the machine's state isn't
+        changed, return values just return an evaluated value
+        - Anything that produces a value is an expression
+      - In the following example, keep in mind that the Math.max function returns the greatest in value
+        from the arguments provided to it
+      #+BEGIN_SRC js :exports both :results output
+        console.log(Math.max(2, 5, 3, 8));
+      #+END_SRC
+
+      #+RESULTS:
+      : 8.
+
+      - *CONTROL FLOW*
+        - statements are executed from top to bottom
+        - *CONDITIONAL EXECUTION*
+          - *if* control flow executes only when the condition evaluates to true
+          - *else if* evaluates when theres another condition to evaluate to true
+          - *else* evaluates when the condition aren't met
+          #+BEGIN_SRC js :exports both :results output
+            //let theNumber = Number(prompt("Enter your number"));
+            let theNumber = 5;
+            if (!Number.isNaN(theNumber)) {
+                console.log("Your number is the square root of " + (theNumber * theNumber));
+            }
+          #+END_SRC
+
+          #+RESULTS:
+          : Your number is the square root of 25
+          
+          #+BEGIN_SRC js :exports both :results output
+            let theNumber = Number("Got smiles?");
+            if (!Number.isNaN(theNumber)) {
+                console.log("Your number is the square root of " + (theNumber * theNumber));
+            } else {
+                console.log("Why didn't you provide me a number?");
+            }
+          #+END_SRC
+
+          #+RESULTS:
+          : Why didn't you provide me a number?
+          
+          #+BEGIN_SRC js :exports both :results output
+            let pickedNumber = 99;
+            if (pickedNumber < 10) {
+                console.log("Small");
+            } else if (pickedNumber < 100) {
+                console.log("Medium");
+            } else {
+                console.log("Large");
+            }
+          #+END_SRC
+
+          #+RESULTS:
+          : Medium
+        - *while* loops are another way to provied control flow, it executes only while
+          a condition is true
+          - *do while* the block of code from the do executes at least one time, and then
+            the condition is evaluated so as to keep executing the _do code block_
+            #+BEGIN_SRC js :exports both :results output
+              let aNumber = 0; // defininig and initializing a number to zero
+              while (aNumber <= 12) {
+                  console.log(aNumber);
+                  aNumber = aNumber +2;
+              }
+            #+END_SRC
+
+            #+RESULTS:
+            : 0
+            : 2
+            : 4
+            : 6
+            : 8
+            : 10
+            : 12
+
+          - *for loops:* are used as a control flow similar to while loops, but for loops are more
+            of a shortcut, for loops are composed of:
+            - a counter to keep control of the loop
+            - a condition
+            - a counter update which executes every time the code block ends
+            #+BEGIN_SRC js :exports both :results output
+              // now we do the for loop version of the while code done before
+              for (let counter = 0; counter <= 12; counter = counter + 2) {
+                  console.log(counter);
+              }
+            #+END_SRC
+
+            #+RESULTS:
+            : 0
+            : 2
+            : 4
+            : 6
+            : 8
+            : 10
+            : 12
+            
+          - *break* is used to break out of loops, for example, it's possible to test a conditional
+            and use break to get out of the for loop
+            #+BEGIN_SRC js :exports both :results output
+              for(let counter = 20; ; counter = counter + 1 ) {
+                  if (counter % 7 == 0) {
+                      console.log(counter);
+                      break;
+                  }
+              }
+            #+END_SRC
+
+            #+RESULTS:
+            : 21
+          - *continue* is used to jump out of the current source block and continue with
+            the next iteration
+          - *switch* is used as a way to test for different conditions from an evaluation
+            - apart from cases, there's a default which executes if none of the cases are met
+
+*** Exercises
+**** 1
+          #+BEGIN_SRC js :exports both :results output
+            for(let counter = 1; counter <= 7; counter++) {
+                console.log("*".repeat(counter));
+            }
+          #+END_SRC
+
+          #+RESULTS:
+          : *
+          : **
+          : ***
+          : ****
+          : *****
+          : ******
+          : *******
+**** 2
+          #+BEGIN_SRC js :exports both :results output
+            for (let numberCount = 1; numberCount <= 100; numberCount++) {
+                if (numberCount % 3 == 0 && numberCount % 5 == 0) {
+                    console.log(numberCount + " is FizzFuzz");
+                } else if (numberCount % 3 == 0) {
+                    console.log(numberCount + " is Fizz");
+                } else if (numberCount % 5 == 0) {
+                    console.log(numberCount + " is Fuzz");
+                }
+            }
+          #+END_SRC
+
+          #+RESULTS:
+          #+begin_example
+          3 is Fizz
+          5 is Fuzz
+          6 is Fizz
+          9 is Fizz
+          10 is Fuzz
+          12 is Fizz
+          15 is FizzFuzz
+          18 is Fizz
+          20 is Fuzz
+          21 is Fizz
+          24 is Fizz
+          25 is Fuzz
+          27 is Fizz
+          30 is FizzFuzz
+          33 is Fizz
+          35 is Fuzz
+          36 is Fizz
+          39 is Fizz
+          40 is Fuzz
+          42 is Fizz
+          45 is FizzFuzz
+          48 is Fizz
+          50 is Fuzz
+          51 is Fizz
+          54 is Fizz
+          55 is Fuzz
+          57 is Fizz
+          60 is FizzFuzz
+          63 is Fizz
+          65 is Fuzz
+          66 is Fizz
+          69 is Fizz
+          70 is Fuzz
+          72 is Fizz
+          75 is FizzFuzz
+          78 is Fizz
+          80 is Fuzz
+          81 is Fizz
+          84 is Fizz
+          85 is Fuzz
+          87 is Fizz
+          90 is FizzFuzz
+          93 is Fizz
+          95 is Fuzz
+          96 is Fizz
+          99 is Fizz
+          100 is Fuzz
+          #+end_example
+          
+          - 3
+            #+BEGIN_SRC js :exports both :results output
+              for (let size = 8; size > 0; size--) {
+                  if(size % 2) {
+                      console.log("# # # # ");
+                  } else {
+                      console.log(" # # # #");
+                  }
+              }
+            #+END_SRC
